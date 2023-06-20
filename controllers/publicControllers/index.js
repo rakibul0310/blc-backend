@@ -70,15 +70,11 @@ const login = async (req, res) => {
     const { email, password } = req.body;
     if (!email) {
       res.status(400).json({
-        error: {
-          msg: "Email is require",
-        },
+        message: "Email is require",
       });
     } else if (!password) {
       res.status(400).json({
-        error: {
-          msg: "Password is require",
-        },
+        message: "Password is require",
       });
     } else {
       // rest of the code here
