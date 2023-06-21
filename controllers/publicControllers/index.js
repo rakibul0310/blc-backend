@@ -6,15 +6,11 @@ const User = require("../../models/userModel");
  */
 const register = async (req, res) => {
   try {
-    const { firstName, lastName, email, password, confrimPassword } = req.body;
+    const { name, email, password, confrimPassword } = req.body;
 
-    if (!firstName) {
+    if (!name) {
       res.status(400).json({
-        message: "First name is required",
-      });
-    } else if (!lastName) {
-      res.status(400).json({
-        message: "Last name is required",
+        message: "Name is required",
       });
     } else if (!email) {
       res.status(400).json({
@@ -38,8 +34,7 @@ const register = async (req, res) => {
         });
       } else {
         const user = await User.create({
-          firstName,
-          lastName,
+          name,
           email,
           password,
           token: generateToken(email),
