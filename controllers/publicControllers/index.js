@@ -1,4 +1,5 @@
 const { generateToken } = require("../../config/generateToken");
+const Course = require("../../models/courseModel");
 const User = require("../../models/userModel");
 
 /**
@@ -97,7 +98,32 @@ const login = async (req, res) => {
   }
 };
 
+const getAllCourses = async (req, res) => {
+  try {
+    const courses = await Course.find({});
+    res.json({ courses });
+  } catch (error) {
+    res.status(400).json({
+      message: error.toString(),
+    });
+  }
+};
+
+const getCourseById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const course = await Course.findOne({ _id: id });
+    res.json({ course });
+  } catch (error) {
+    res.status(400).json({
+      message: error.toString(),
+    });
+  }
+};
+
 module.exports = {
   login,
   register,
+  getAllCourses,
+  getCourseById,
 };
