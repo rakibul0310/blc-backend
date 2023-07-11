@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const connectDB = require("./config/db");
-// const connectDB = require("./config/db");
+
 const port = 1000;
 
 // internal export
@@ -9,7 +9,7 @@ const port = 1000;
 const publicRoutes = require("./routes/publicRoutes/index");
 const commonRoutes = require("./routes/commonRoutes/index");
 // const privateRoutes = require("./routes/privateRoutes/index");
-// const secureRoutes = require("./routes/secureRoutes/index");
+const secureRoutes = require("./routes/secureRoutes/index");
 
 const app = express();
 
@@ -34,7 +34,7 @@ connectDB();
 app.use("/public/api", publicRoutes);
 app.use("/api", commonRoutes);
 // app.use("/private/api", privateRoutes);
-// app.use("/secure/api", secureRoutes);
+app.use("/secure/api", secureRoutes);
 
 // base API
 app.get("/", (req, res) => {
