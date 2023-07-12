@@ -62,8 +62,21 @@ const createMyCourse = async (req, res) => {
   }
 };
 
+const getMyCourses = async (req, res) => {
+  try {
+    const { id } = req.auth;
+    const myCourses = await MyCourse.find({ email: id });
+    res.json(myCourses);
+  } catch (error) {
+    res.status(400).json({
+      message: error.toString(),
+    });
+  }
+};
+
 module.exports = {
   paymentIntent,
   createTransaction,
   createMyCourse,
+  getMyCourses,
 };
