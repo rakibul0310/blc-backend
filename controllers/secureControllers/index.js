@@ -86,10 +86,23 @@ const getMyCourseById = async (req, res) => {
   }
 };
 
+const getTransactionHistory = async (req, res) => {
+  const { id } = req.auth;
+  try {
+    const transaction = await Transaction.find({ email: id });
+    res.json(transaction);
+  } catch (error) {
+    res.status(400).json({
+      message: error.toString(),
+    });
+  }
+};
+
 module.exports = {
   paymentIntent,
   createTransaction,
   createMyCourse,
   getMyCourses,
   getMyCourseById,
+  getTransactionHistory,
 };

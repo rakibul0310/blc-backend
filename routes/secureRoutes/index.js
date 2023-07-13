@@ -6,6 +6,7 @@ const {
   createMyCourse,
   getMyCourses,
   getMyCourseById,
+  getTransactionHistory,
 } = require("../../controllers/secureControllers");
 const router = express.Router();
 
@@ -17,5 +18,6 @@ router.post("/transaction", createTransaction);
 router.post("/my-courses", createMyCourse);
 router.get("/my-courses", getMyCourses);
 router.get("/my-courses/:id", getMyCourseById);
+router.get("/my-transaction", getTransactionHistory);
 
 module.exports = router;
