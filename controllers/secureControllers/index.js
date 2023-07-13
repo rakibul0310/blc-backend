@@ -74,9 +74,22 @@ const getMyCourses = async (req, res) => {
   }
 };
 
+const getMyCourseById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const myCourses = await MyCourse.findOne({ _id: id });
+    res.json(myCourses);
+  } catch (error) {
+    res.status(400).json({
+      message: error.toString(),
+    });
+  }
+};
+
 module.exports = {
   paymentIntent,
   createTransaction,
   createMyCourse,
   getMyCourses,
+  getMyCourseById,
 };
