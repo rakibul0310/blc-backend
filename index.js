@@ -8,7 +8,7 @@ const port = 1000;
 // const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 const publicRoutes = require("./routes/publicRoutes/index");
 const commonRoutes = require("./routes/commonRoutes/index");
-// const privateRoutes = require("./routes/privateRoutes/index");
+const privateRoutes = require("./routes/privateRoutes/index");
 const secureRoutes = require("./routes/secureRoutes/index");
 
 const app = express();
@@ -33,7 +33,7 @@ connectDB();
 // folder structred
 app.use("/public/api", publicRoutes);
 app.use("/api", commonRoutes);
-// app.use("/private/api", privateRoutes);
+app.use("/private/api", privateRoutes);
 app.use("/secure/api", secureRoutes);
 
 // base API

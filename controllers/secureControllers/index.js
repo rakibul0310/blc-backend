@@ -1,5 +1,8 @@
 const MyCourse = require("../../models/myCourseModel");
+const SupportTicket = require("../../models/supportTicketModel");
 const Transaction = require("../../models/transactionModel");
+const User = require("../../models/userModel");
+const Cloudinary = require("../../config/cloudinary.js");
 
 const stripe = require("stripe")(
   "sk_test_51L43RjDIsxhoLpzhcuQQuFKF3oJ4gkZGgMlVPwjQvfWKeorzEza7MKZFGCqVLSWNoH5q6MMDkble6nVheJk59zEb00PSqvHAjZ"
@@ -98,6 +101,98 @@ const getTransactionHistory = async (req, res) => {
   }
 };
 
+// Support ticket
+const createSupportTicket = async (req, res) => {
+  try {
+    const { purpose, question } = req.body;
+    const id = req.auth.id;
+
+    if (!req.body)
+      return res.status(400).json({
+        message: "Please provide data",
+      });
+    if (!id)
+      return res.status(400).json({
+        message: "User Id is missing",
+      });
+    if (!purpose)
+      return res.status(400).json({
+        message: "Purpose is missing",
+      });
+    if (!question)
+      return res.status(400).json({
+        message: "Question is missing",
+      });
+
+    // find user
+    const user = await User.findOne({ email: id });
+
+    // upload the image
+    if (req.file?.path) {
+      const image = await Cloudinary.uploader.upload(req.file?.path);
+      const avatar = {
+        avatar: image.secure_url,
+        avatar_public_url: image.public_id,
+      };
+    }
+
+    if (user) {
+      const newSupportTicket = await SupportTicket.create({
+        email: user.email,
+        purpose,
+        image: avatar ? avatar : "",
+        question,
+      });
+      if (newSupportTicket) {
+        res.status(200).json({
+          message: "Support ticket created successfully",
+        });
+      } else {
+        res.status(400).json({
+          message: "Cannot create support ticket",
+        });
+      }
+    } else {
+      res.status(400).json({
+        message: "Invalid user credentials",
+      });
+    }
+  } catch (error) {
+    //console.log(error)
+    res.status(500).json({
+      message: error.toString(),
+    });
+  }
+};
+
+// get support history
+const getSupportHistory = async (req, res) => {
+  try {
+    // const userId = req.params.user_id;
+    const id = req.auth.id;
+    if (id) {
+      const supportTicket = await SupportTicket.find({
+        email: id,
+      });
+      if (supportTicket) {
+        res.status(200).json(supportTicket);
+      } else {
+        res.status(400).json({
+          message: "Cannot find support ticket",
+        });
+      }
+    } else {
+      res.status(400).json({
+        message: "Cannot find user credentials",
+      });
+    }
+  } catch (error) {
+    res.status(400).json({
+      message: error.toString(),
+    });
+  }
+};
+
 module.exports = {
   paymentIntent,
   createTransaction,
@@ -105,4 +200,6 @@ module.exports = {
   getMyCourses,
   getMyCourseById,
   getTransactionHistory,
+  createSupportTicket,
+  getSupportHistory,
 };
