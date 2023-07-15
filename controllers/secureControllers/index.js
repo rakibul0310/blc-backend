@@ -126,11 +126,12 @@ const createSupportTicket = async (req, res) => {
 
     // find user
     const user = await User.findOne({ email: id });
+    let avatar = {};
 
     // upload the image
     if (req.file?.path) {
       const image = await Cloudinary.uploader.upload(req.file?.path);
-      const avatar = {
+      avatar = {
         avatar: image.secure_url,
         avatar_public_url: image.public_id,
       };
@@ -140,7 +141,7 @@ const createSupportTicket = async (req, res) => {
       const newSupportTicket = await SupportTicket.create({
         email: user.email,
         purpose,
-        image: avatar ? avatar : "",
+        image: avatar ? avatar.avatar : "",
         question,
       });
       if (newSupportTicket) {
