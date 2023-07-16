@@ -76,15 +76,21 @@ const login = async (req, res) => {
       // rest of the code here
       const user = await User.findOne({ email });
       if (user) {
-        const updatedUser = await User.findOneAndUpdate(
-          { email },
-          {
-            $set: {
-              token: generateToken(email),
-            },
-          }
-        );
-        res.status(200).json({ user: updatedUser });
+        if (user && (await user.matchPassword(password))) {
+          const updatedUser = await User.findOneAndUpdate(
+            { email },
+            {
+              $set: {
+                token: generateToken(email),
+              },
+            }
+          );
+          res.status(200).json({ user: updatedUser });
+        } else {
+          res.status(400).json({
+            message: "Invalid password",
+          });
+        }
       } else {
         res.status(400).json({
           message: "User not found",
