@@ -15,6 +15,8 @@ const userSchema = new mongoose.Schema({
   gender: String,
   avatar_public_url: String,
   avatar: String,
+  join_date: { type: String, default: new Date() },
+  country: String,
 });
 
 userSchema.methods.matchPassword = async function (enteredPassword) {
