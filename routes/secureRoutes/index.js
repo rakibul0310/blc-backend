@@ -9,6 +9,11 @@ const {
   getTransactionHistory,
   createSupportTicket,
   getSupportHistory,
+  getTotalLearningTime,
+  getTotalTask,
+  getLatestCourse,
+  getUpcomingTask,
+  getLatestTransactions,
 } = require("../../controllers/secureControllers");
 const router = express.Router();
 
@@ -23,5 +28,10 @@ router.get("/my-courses/:id", getMyCourseById);
 router.get("/my-transaction", getTransactionHistory);
 router.post("/support-ticket", createSupportTicket);
 router.get("/support-ticket", getSupportHistory);
+router.get("/learning-time", getTotalLearningTime);
+router.get("/total-task", getTotalTask);
+router.get("/latest-course", getLatestCourse);
+router.get("/upcoming-task", getUpcomingTask);
+router.get("/latest-transactions", getLatestTransactions);
 
 module.exports = router;

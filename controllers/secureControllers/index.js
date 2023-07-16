@@ -194,6 +194,155 @@ const getSupportHistory = async (req, res) => {
   }
 };
 
+// get learning history
+const getTotalLearningTime = async (req, res) => {
+  try {
+    const id = req.auth.id;
+    if (id) {
+      const myCourses = await MyCourse.find({
+        email: id,
+      });
+      if (myCourses?.length > 0) {
+        let totalHours = 0;
+        myCourses.map(
+          (c) => (totalHours = totalHours + parseInt(c?.duration?.split("")[0]))
+        );
+        res.status(200).json(totalHours);
+      } else {
+        res.status(400).json({
+          message: "Cannot find course",
+        });
+      }
+    } else {
+      res.status(400).json({
+        message: "Cannot find user credentials",
+      });
+    }
+  } catch (error) {
+    res.status(400).json({
+      message: error.toString(),
+    });
+  }
+};
+
+// get task history
+const getTotalTask = async (req, res) => {
+  try {
+    const id = req.auth.id;
+    if (id) {
+      const myCourses = await MyCourse.find({
+        email: id,
+      });
+      if (myCourses?.length > 0) {
+        let totalTask = 0;
+        myCourses.map(
+          (c) => (totalTask = totalTask + parseInt(c?.courseOutline?.length))
+        );
+        res.status(200).json(totalTask);
+      } else {
+        res.status(400).json({
+          message: "Cannot find course",
+        });
+      }
+    } else {
+      res.status(400).json({
+        message: "Cannot find user credentials",
+      });
+    }
+  } catch (error) {
+    res.status(400).json({
+      message: error.toString(),
+    });
+  }
+};
+
+// get latest course history
+const getLatestCourse = async (req, res) => {
+  try {
+    const id = req.auth.id;
+    if (id) {
+      const myCourses = await MyCourse.find({
+        email: id,
+      })
+        .limit(3)
+        .sort({ createdAt: 1 });
+      if (myCourses) {
+        res.status(200).json(myCourses);
+      } else {
+        res.status(400).json({
+          message: "Cannot find course",
+        });
+      }
+    } else {
+      res.status(400).json({
+        message: "Cannot find user credentials",
+      });
+    }
+  } catch (error) {
+    res.status(400).json({
+      message: error.toString(),
+    });
+  }
+};
+
+// get task history
+const getUpcomingTask = async (req, res) => {
+  try {
+    const id = req.auth.id;
+    if (id) {
+      const myCourses = await MyCourse.find({
+        email: id,
+      }).sort({ createdAt: 1 });
+      if (myCourses?.length > 1) {
+        const selectedCourse = myCourses[0];
+        let selectedTask = selectedCourse?.courseOutline?.split(0, 3);
+        res.status(200).json({ upcomingTask: selectedTask });
+      } else {
+        res.status(400).json({
+          message: "Cannot find course",
+        });
+      }
+    } else {
+      res.status(400).json({
+        message: "Cannot find user credentials",
+      });
+    }
+  } catch (error) {
+    res.status(400).json({
+      message: error.toString(),
+    });
+  }
+};
+
+// get latest transaction history
+const getLatestTransactions = async (req, res) => {
+  try {
+    const id = req.auth.id;
+    if (id) {
+      const transaction = await Transaction.find({
+        email: id,
+      })
+        .limit(3)
+        .sort({ date: 1 });
+      if (transaction) {
+        res.status(200).json(transaction);
+      } else {
+        res.status(400).json({
+          message: "Cannot find transaction",
+        });
+      }
+    } else {
+      res.status(400).json({
+        message: "Cannot find user credentials",
+      });
+    }
+  } catch (error) {
+    res.status(400).json({
+      message: error.toString(),
+    });
+  }
+};
+
 module.exports = {
   paymentIntent,
   createTransaction,
@@ -203,4 +352,9 @@ module.exports = {
   getTransactionHistory,
   createSupportTicket,
   getSupportHistory,
+  getTotalLearningTime,
+  getTotalTask,
+  getLatestCourse,
+  getUpcomingTask,
+  getLatestTransactions,
 };
