@@ -38,8 +38,10 @@ app.use("/secure/api", secureRoutes);
 
 // base API
 app.get("/", (req, res) => {
-  //   res.header("Access-Control-Allow-Origin", "https://rightfuture.in");
-  //   res.header("Access-Control-Allow-Origin", "https://rightfuture.netlify.app");
+  res.header(
+    "Access-Control-Allow-Origin",
+    "https://blended-learning-center.netlify.app/"
+  );
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   res.send("Hello BLC !");
 });
