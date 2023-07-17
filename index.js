@@ -16,8 +16,7 @@ const app = express();
 require("dotenv").config();
 const corsOptions = {
   origin: [
-    // "https://rightfuture.in",
-    // "https://rightfuture.netlify.app",
+    "https://blended-learning-center.netlify.app/",
     "http://localhost:3000",
   ],
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
