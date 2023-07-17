@@ -8,6 +8,7 @@ const courseSchema = new mongoose.Schema({
   offerrPrice: { type: Number, required: true },
   coverImg: { type: String },
   author: { type: String, required: true },
+  authorEmail: { type: String, required: true },
   avatar: { type: String },
   published: { type: String, default: new Date() },
   lastUpdate: { type: String, default: new Date() },

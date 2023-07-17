@@ -295,8 +295,8 @@ const getUpcomingTask = async (req, res) => {
       }).sort({ createdAt: 1 });
       if (myCourses?.length > 1) {
         const selectedCourse = myCourses[0];
-        let selectedTask = selectedCourse?.courseOutline?.split(0, 3);
-        res.status(200).json({ upcomingTask: selectedTask });
+        let selectedTask = selectedCourse?.courseOutline?.slice(0, 3);
+        res.status(200).json(selectedTask);
       } else {
         res.status(400).json({
           message: "Cannot find course",
