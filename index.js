@@ -16,7 +16,8 @@ const app = express();
 require("dotenv").config();
 const corsOptions = {
   origin: [
-    "https://blended-learning-center.netlify.app/",
+    // "https://rightfuture.in",
+    "https://blended-learning-center.netlify.app",
     "http://localhost:3000",
   ],
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
@@ -39,7 +40,7 @@ app.use("/secure/api", secureRoutes);
 app.get("/", (req, res) => {
   res.header(
     "Access-Control-Allow-Origin",
-    "https://blended-learning-center.netlify.app/"
+    "https://blended-learning-center.netlify.app"
   );
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   res.send("Hello BLC !");
